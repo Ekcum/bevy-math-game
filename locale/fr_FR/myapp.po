@@ -14,16 +14,16 @@ msgid "Hello World"
 msgstr "Salut monde"
 
 msgid "Print Task"
-msgstr ""
+msgstr "Tâche ({} sur {}): {}"
 
 msgid "Print Well Done"
-msgstr ""
+msgstr "Correct"
 
 msgid "Print False"
-msgstr ""
+msgstr "Faux, la bonne solution est {}"
 
 msgid "Print Stats"
-msgstr ""
+msgstr "Tu as {} / {} ({}%) completé corréctement."
 
 msgid "Print Error: Only numbers"
-msgstr "You can only enter numbers."
+msgstr "Tu ne peux saisir que des chiffres."

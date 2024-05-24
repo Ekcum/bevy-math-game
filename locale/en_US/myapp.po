@@ -14,7 +14,7 @@ msgid "Hello World"
 msgstr "Hi World!"
 
 msgid "Print Task"
-msgstr "Task (%d of %d): %d"
+msgstr "Task ({} of {}): {}"
 
 msgid "Print Well Done"
 msgstr "Well done"
@@ -23,7 +23,7 @@ msgid "Print False"
 msgstr "False, the right solution is {}"
 
 msgid "Print Stats"
-msgstr "You have {counter} / {} ({:.2}%) solved right."
+msgstr "You have {} / {} ({}%) solved right."
 
 msgid "Print Error: Only numbers"
 msgstr "You can only enter numbers."

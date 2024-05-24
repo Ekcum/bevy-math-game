@@ -2,7 +2,7 @@ use rand::Rng;
 use std::fmt::{Display, Formatter};
 use std::fs::File;
 use std::io::{stdin, stdout, Write};
-use gettext_ng::Catalog;
+use gettextrs::*;
 use std::env::var;
 
 #[derive(Debug, ValueEnum, Clone)]
@@ -162,8 +162,16 @@ fn main() {
     println!("{}", lang_code);
     let filename = format!("./locale/{}/myapp.mo", lang_code);
     println!("{}", filename);
-    let f = File::open(filename).expect("could not open the catalog");
-    let catalog = Catalog::parse(f).expect("could not parse the catalog");
+    //let f = File::open(filename).expect("could not open the catalog");
+    //let catalog = Catalog::parse(f).expect("could not parse the catalog");
+
+    TextDomain::new("myapp")
+        .locale(&lang_code)
+        .skip_system_data_paths()
+        .push("/mnt/Coding/bevy-math-game")
+        .codeset("UTF-8") // Optional, the builder does this by default
+        .init()
+        .unwrap();
 
     let mut stats = Stats::new(count);
 
@@ -178,23 +186,21 @@ fn main() {
         );
 
         //println!("{}", catalog.gettext("Hello World"));
-
-        print_task(language.clone(), counter, count, exercise);
+        println!("{}", gettext!("Print Task", counter, count, exercise));
+        //print_task(language.clone(), counter, count, exercise);
         let _ = stdout().flush();
 
         let input = get_and_check_input();
 
         if solution == input {
-            println!("{}", catalog.gettext("Print Well Done"));
+            println!("{}", gettext("Print Well Done"));
             stats.increment_correct();
         } else {
-            print_false(language.clone(), solution)
+            println!("{}", gettext!("Print False", solution));
         }
         counter += 1;
     }
-    println!("{}", catalog.gettext("Print Stats"));
-
-    print_stats(language.clone(), stats, count)
+    println!("{}", gettext!("Print Stats", stats.correct, count, format!("{:.2}", stats.get_percent_correct())));
 }
 
 fn get_and_check_input() -> i32 {
@@ -208,7 +214,8 @@ fn get_and_check_input() -> i32 {
                 return a;
             }
             Err(_) => {
-                print_onlynumbers(Args::parse().language.clone());
+                println!("{}", gettext("Print Error: Only numbers"));
+                //print_onlynumbers(Args::parse().language.clone());
             }
         }
     }
@@ -379,77 +386,5 @@ mod tests {
                 4
             )
         );
-    }
-}
-
-//println!("Aufgabe ({counter} von {count}): {}", exercise);
-fn print_task(language: Language, counter: u32, count: u32, exercise: Exercise) {
-    match language {
-        En => {
-            println!("Task ({counter} of {count}): {}", exercise)
-        }
-        De => {
-            println!("Aufgabe ({counter} von {count}): {}", exercise)
-        }
-        Fr => {
-            println!("Tâche ({counter} sur {count}): {}", exercise)
-        }
-    }
-}
-
-fn print_well_done(language: Language) {
-    match language {
-        En => {
-            println!("Well done")
-        }
-        De => {
-            println!("Gut gemacht")
-        }
-        Fr => {
-            println!("Correct")
-        }
-    }
-}
-
-fn print_false(language: Language, solution: Solution) {
-    match language {
-        En => {
-            println!("False, the right solution is {}", solution);
-        }
-        De => {
-            println!("Falsch, richtige Lösung ist {}", solution);
-        }
-        Fr => {
-            println!("Faux, la bonne solution est {}", solution);
-        }
-    }
-}
-
-//    println!("\nDu hast {} / {count} ({:.2}%) richtig gelöst.", stats.correct, stats.get_percent_correct())
-fn print_stats(language: Language, stats: Stats, count: u32) {
-    match language {
-        En => {
-            println!("\nYou have {} / {count} ({:.2}%) solved right.", stats.correct, stats.get_percent_correct())
-        }
-        De => {
-            println!("\nDu hast {} / {count} ({:.2}%) richtig gelöst.", stats.correct, stats.get_percent_correct())
-        }
-        Fr => {
-            println!("\nTu as {} / {count} ({:.2}%) completé corréctement.", stats.correct, stats.get_percent_correct())
-        }
-    }
-}
-
-fn print_onlynumbers(language: Language) {
-    match language {
-        En => {
-            println!("You can only enter numbers.")
-        }
-        De => {
-            println!("Du kannst nur Zahlen eintragen.")
-        }
-        Fr => {
-            println!("Tu ne peux saisir que des chiffres..")
-        }
     }
 }

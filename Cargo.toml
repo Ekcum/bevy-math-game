@@ -6,6 +6,6 @@ edition = "2021"
 [dependencies]
 bevy = "0.13.2"
 clap = { version = "4.5.4", features = ["derive"] }
-gettext-ng = "0.4.1"
+gettext-rs = "0.7.0"
 lazy_static = "1.4.0"
 rand = "0.8.5"
